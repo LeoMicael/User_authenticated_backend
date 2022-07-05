@@ -8,7 +8,7 @@ const pool = new Pool({
 });
 
 pool.on('connect', () => {
-    console.log('connected sucess')
+    console.log('database has been connected')
 })
 
 module.exports = {
