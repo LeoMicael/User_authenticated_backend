@@ -1,5 +1,7 @@
 const db = require('../../config/database')
 
+const {check, validationResult } = require('express-validator/check')
+
 exports.newUser = async (req, res) => {
     const {
         
@@ -9,20 +11,29 @@ exports.newUser = async (req, res) => {
         create_at
 
     } = req.body
+    
+    // check se os campos do formularios estão devidamente preenchidos.
+    // check if all the form fields are complet
     /*
     if (!user_name) {
-        return(
-        res.status(404).send({mesagem: "Todos os campos são obrigatótios"})
-    )}
-    if (!user_email) {
-        return(
-        res.status(404).send({mesagem: "Todos os campos são obrigatótios"})
-    )}
-    if (!user_password) {
-        return(
-        res.status(404).send({mesagem: "Todos os campos são obrigatótios"})
-    )}
+        res.status(404).send({mesagem: "O Campo Nome é Obrigatório"})
+        return
+    }
     */
+   check(user_name).isEmpty(true, () => {
+        res.status(404).send({mesagem: "O campo Email é obrigkkkkkatorio"})
+   })
+    if (!user_email) {
+        res.status(404).send({mesagem: "O campo Email é obrigatorio"})
+        return
+    }
+    if (!user_password) {
+        res.status(404).send({mesagem: "O campo Password é obrigatório"})
+        return
+    }
+    
+
+    
     const {rows} = await db.query('INSERT INTO users (user_name, user_email, user_password, create_at) VALUES ($1, $2, $3, $4)', 
     [
         user_name,

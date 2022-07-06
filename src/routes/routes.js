@@ -4,8 +4,9 @@ const get = require('../model/users/get')
 
 const routes = express.Router()
 
-routes.post('/user/signup', post.newUser)
+routes.post('/signup', post.newUser)
 
-routes.get('/me/:id', get.getUser)
+routes.get('/me/:id', get.getUserById)
+routes.get('/users', get.getUser)
 
 module.exports = routes;

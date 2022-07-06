@@ -7,6 +7,7 @@ const index = require('./middleware/index')
 
 const registerUser = require('./routes/routes')
 const user = require('./routes/routes')
+const users = require('./routes/routes')
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json({type: 'application/vnd.api+json'}))
@@ -15,7 +16,8 @@ app.use(cors())
 
 app.use(index)
 
-app.use('/api', registerUser)
+app.use('/user/', registerUser)
 app.use('/user/', user)
+app.use('/admin/', users)
 
 module.exports = app
