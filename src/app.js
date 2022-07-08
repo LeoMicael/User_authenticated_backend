@@ -3,7 +3,7 @@ const cors = require('cors')
 
 const app = express()
 
-const index = require('./middleware/index')
+const index = require('./middleware')
 
 const registerUser = require('./routes/routes')
 const user = require('./routes/routes')
