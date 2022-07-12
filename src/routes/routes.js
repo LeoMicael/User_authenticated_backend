@@ -10,6 +10,6 @@ routes.post('/signup', post.newUser)
 routes.get('/me/:id', get.getUserById)
 routes.get('/users', get.getUser)
 
-routes.get('/login', get.login)
+routes.post('/login', post.login)
 
 module.exports = routes;

@@ -19,5 +19,6 @@ app.use(index)
 app.use('/user/', registerUser)
 app.use('/user/', user)
 app.use('/admin/', users)
-app.use('/user/',login )
+app.use('/user/', login)
+
 module.exports = app
