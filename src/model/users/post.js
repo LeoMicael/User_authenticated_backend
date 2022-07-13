@@ -44,12 +44,15 @@ exports.newUser = async (req, res) => {
 exports.login = async (req, res) => {
     const { user_email, user_password } = req.body
     const verifyUser = await db.query('SELECT * FROM users WHERE user_email = $1', [user_email])
-    if (!verifyUser) {
+    const userName = verifyUser.rows.map( obj => obj.user_name)
+    const userEmail = verifyUser.rows.map( obj => obj.user_email)
+    if (verifyUser.rowCount <= 0) {
         res.status(404).send({ mensagem: "Email nao encontrado" })
     } else {
-        res.status(200).send({user_name: verifyUser.rows})
+        res.status(200).send({userName: userName,
+        userEmail: userEmail
+        })
     }
-    console.log(verifyUser)
 }
 
 /*
