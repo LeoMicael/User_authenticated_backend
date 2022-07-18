@@ -40,27 +40,3 @@ exports.newUser = async (req, res) => {
         messagem: "Usuario criado com sucesso"
     })
 }
-
-exports.login = async (req, res) => {
-    const { user_email, user_password } = req.body
-    const verifyUser = await db.query('SELECT * FROM users WHERE user_email = $1', 
-        [user_email]
-    );
-    const userName = verifyUser.rows.map( obj => obj.user_name);
-    const userId = verifyUser.rows.map( obj => obj.user_id);
-    const userPassword = verifyUser.rows.map(obj => obj.user_password);
-    if (verifyUser.rowCount <= 0) {
-        res.status(404).send({ mensagem: "Email nao encontrado" })
-        return
-    } 
-    // verificação das senhas 
-    const stringPass = userPassword.toString(user_password);
-    const stringName = userName.toString(userName)
-    const passMatch = bcrypt.compareSync(user_password, stringPass );
-    if (!passMatch) {
-    return res.status(422).send({mensagem: "Email ou senha invalidos"})
-    } else {
-    return res.status(200).send({userId: stringId, userName: stringName})
-    }
-    
-}
