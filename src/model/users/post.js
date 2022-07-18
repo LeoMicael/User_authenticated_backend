@@ -7,7 +7,7 @@ exports.newUser = async (req, res) => {
         user_email,
         user_password,
         create_at
-    } = req.body
+    } = req.body;
     // check se os campos do formularios estão devidamente preenchidos.
     // check if all the form fields are complet
     if (!user_name) {
@@ -23,9 +23,9 @@ exports.newUser = async (req, res) => {
         return
     }
     // senha criptografada
-    const hash_password = await bcrypt.hash(user_password, 10)
+    const hash_password = await bcrypt.hash(user_password, 10);
 
-    const existEmail = await db.query('SELECT * FROM users WHERE user_email = $1', [user_email])
+    const existEmail = await db.query('SELECT * FROM users WHERE user_email = $1', [user_email]);
     if (existEmail.rows.length > 0) {
         return res.status(401).send({ mensagem: "Cadastro não autorizado" })
     }
@@ -35,7 +35,7 @@ exports.newUser = async (req, res) => {
             user_email,
             hash_password,
             create_at,
-        ])
+        ]);
     res.status(201).send({
         messagem: "Usuario criado com sucesso"
     })
@@ -43,24 +43,24 @@ exports.newUser = async (req, res) => {
 
 exports.login = async (req, res) => {
     const { user_email, user_password } = req.body
-    const verifyUser = await db.query('SELECT * FROM users WHERE user_email = $1', [user_email])
-    const userName = verifyUser.rows.map( obj => obj.user_name)
-    const userEmail = verifyUser.rows.map( obj => obj.user_email)
+    const verifyUser = await db.query('SELECT * FROM users WHERE user_email = $1', 
+        [user_email]
+    );
+    const userName = verifyUser.rows.map( obj => obj.user_name);
+    const userId = verifyUser.rows.map( obj => obj.user_id);
+    const userPassword = verifyUser.rows.map(obj => obj.user_password);
     if (verifyUser.rowCount <= 0) {
         res.status(404).send({ mensagem: "Email nao encontrado" })
+        return
+    } 
+    // verificação das senhas 
+    const stringPass = userPassword.toString(user_password);
+    const stringName = userName.toString(userName)
+    const passMatch = bcrypt.compareSync(user_password, stringPass );
+    if (!passMatch) {
+    return res.status(422).send({mensagem: "Email ou senha invalidos"})
     } else {
-        res.status(200).send({userName: userName,
-        userEmail: userEmail
-        })
+    return res.status(200).send({userId: stringId, userName: stringName})
     }
+    
 }
-
-/*
-if (!verifyUser) {
-    return res.status(404).send({mensagem: "Email não encontrado!"})
-}
-
-*/
-
-
-
